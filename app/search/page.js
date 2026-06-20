@@ -18,7 +18,7 @@ export default async function SearchPage({ searchParams }) {
       <h1>Buscar tareas</h1>
 
       <form method="get" className="search-form">
-        <input name="q" defaultValue={q} placeholder="Buscar..." />
+        <input name="q" placeholder="Buscar..." />
         <button type="submit">Buscar</button>
       </form>
 
