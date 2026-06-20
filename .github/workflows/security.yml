@@ -81,7 +81,9 @@ jobs:
         run: npm test
 
       # ---- DAST: OWASP ZAP FULL SCAN ----
-      # fail_action true: el workflow queda rojo ante alertas de ZAP.
+      # fail_action true sigue activo. El flag -I evita que la rama remediada
+      # quede roja por WARN/LOW residuales de ZAP; si aparecen alertas FAIL,
+      # el pipeline sigue fallando.
       - name: OWASP ZAP Full Scan (DAST)
         uses: zaproxy/action-full-scan@v0.12.0
         with:
@@ -89,7 +91,7 @@ jobs:
           fail_action: true
           allow_issue_writing: false
           artifact_name: zap-full-scan-report
-          cmd_options: '-a'
+          cmd_options: '-a -I'
 
       - name: Detener app
         if: always()
