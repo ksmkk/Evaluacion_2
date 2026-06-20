@@ -66,8 +66,7 @@ export default function DashboardPage() {
         <nav>
           <a href="/search">Buscar</a>
           <a href="/notes">Notas</a>
-          {/* El enlace externo pasa por /api/go (redirector) -> demo de V3 */}
-          <a href="/api/go?url=https://www.ucn.cl">Sitio UCN</a>
+          <a href="https://www.ucn.cl" target="_blank" rel="noreferrer">Sitio UCN</a>
           <button onClick={logout} className="link">Salir</button>
         </nav>
       </header>
