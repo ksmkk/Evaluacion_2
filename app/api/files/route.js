@@ -12,7 +12,7 @@ const ALLOWED_FILES = new Set(['bienvenida.txt', 'plantilla-tarea.txt']);
 
 function isInsideNotesDir(filePath) {
   const rel = relative(NOTES_DIR, filePath);
-  return rel && !rel.startsWith('..') && !rel.includes(`..${sep}`) && !resolve(rel).startsWith(sep);
+  return rel !== '' && !rel.startsWith('..') && !rel.startsWith(sep);
 }
 
 export async function GET(req) {
