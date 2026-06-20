@@ -1,17 +1,16 @@
 import { todos } from '@/lib/store';
 
 /**
- * VULN V1 (Reflected XSS / A03):
- * Server Component que refleja `q` en el HTML SIN escapar via
- * dangerouslySetInnerHTML. La carga util viaja en la respuesta HTTP (SSR),
- * por lo que el Active Scan de OWASP ZAP la detecta como
- * "Cross Site Scripting (Reflected)".
+ * FIX V1 (Reflected XSS / A03):
+ * El valor `q` se renderiza mediante JSX normal. React escapa el contenido por
+ * defecto, por lo que un payload como <script>alert(1)</script> se muestra como
+ * texto y no se interpreta como HTML ejecutable.
  */
 export default async function SearchPage({ searchParams }) {
   const sp = await searchParams;
-  const q = sp?.q ?? '';
+  const q = String(sp?.q ?? '');
   const results = todos.filter((t) =>
-    t.title.toLowerCase().includes(String(q).toLowerCase())
+    t.title.toLowerCase().includes(q.toLowerCase())
   );
 
   return (
@@ -23,8 +22,7 @@ export default async function SearchPage({ searchParams }) {
         <button type="submit">Buscar</button>
       </form>
 
-      {/* VULN V1: q sin sanitizar, inyectado como HTML */}
-      <p dangerouslySetInnerHTML={{ __html: `Resultados para: <b>${q}</b>` }} />
+      <p>Resultados para: <b>{q}</b></p>
 
       <ul>
         {results.map((t) => (
