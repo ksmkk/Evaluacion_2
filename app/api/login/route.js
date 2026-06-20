@@ -1,4 +1,4 @@
-import { users, makeSession, CORS } from '@/lib/store';
+import { users, verifyPassword, makeSession, CORS } from '@/lib/store';
 
 function buildSessionCookie(session) {
   return [
@@ -14,8 +14,8 @@ function buildSessionCookie(session) {
 export async function POST(req) {
   try {
     const { username, password } = await req.json();
-    const user = users.find((u) => u.username === username && u.password === password);
-    if (!user) {
+    const user = users.find((u) => u.username === username);
+    if (!user || !verifyPassword(user, password)) {
       return Response.json({ error: 'Credenciales invalidas' }, { status: 401, headers: CORS });
     }
 
